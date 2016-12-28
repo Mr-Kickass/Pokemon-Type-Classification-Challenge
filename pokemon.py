@@ -20,7 +20,8 @@ np.random.seed(seed)
 dataset=np.array(pd.read_csv('C:/Users/DELL/Anaconda3/Datasets/Pokemon.csv'))
 #dataset=np.loadtxt('C:/Users/DELL/Anaconda3/Datasets/Pokemon.csv', delimiter=",")
 
-trainSet=dataset[:,4:11]
+trainSet=dataset[0:560,4:11]
+testSet=dataset[560:801,4:11]
 label=dataset[:,2:3]
 
 encoder=LabelEncoder()
@@ -42,3 +43,8 @@ model.fit(trainSet,encodedLabel,nb_epoch=100,batch_size=10)
 
 eval=model.evaluate(trainSet,label)
 print("%s: %.2f%% " % (model.metrics_names[1], eval[1]*100))
+
+prediction=model.predict(testSet)
+
+roundOff=[round(x) for x in prediction]
+print(roundOff)
