@@ -66,7 +66,7 @@ def main(train_data, train_labels, test_data, test_labels):
 	optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 	# Initialize tensorflow
-	init = tf.initialize_all_variables()
+	init = tf.global_variables_initializer()
 
 	with tf.Session() as ses:
 		ses.run(init)
@@ -75,9 +75,9 @@ def main(train_data, train_labels, test_data, test_labels):
 			for point in range(len(train_data)):
 				_, c = ses.run([optimizer, cost], feed_dict={X:[train_data[point]], Y:[train_labels_new[point]]})
 				loss_avg += c
-			print "Epoch " + str(ep) + ", " + "Loss " + str(loss_avg/len(train_data))
+			print ("Epoch " + str(ep) + ", " + "Loss " + str(loss_avg/len(train_data)))
 
 		# Test the trained model
 		correct_pred2 = tf.nn.in_top_k(out_layer, tf.cast(tf.argmax(Y,1), "int32"), 5)
 		accuracy2 = tf.reduce_mean(tf.cast(correct_pred2, "float"))
-		print "Accuracy " + str(accuracy2.eval({X:test_data, Y:test_labels_new})*100)
+		print ("Accuracy " + str(accuracy2.eval({X:test_data, Y:test_labels_new})*100))
