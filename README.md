@@ -12,16 +12,13 @@ Pokemon Type Prediction challenge by @Sirajology on [Youtube](https://www.youtub
 ## Dependencies
 * Tensorflow
 * Numpy
+* Pandas
 
 ## Usage
-Run `python main.py` and it would train the network and then run it on a randomly subsampled test dataset (not included in the training) and print the accuracy.
+Run `python MLP.py` and it would train the network and then run it on a randomly subsampled test dataset (not included in the training) and print the accuracy ofr two evaluation methods.
 
 ## Results
 |ID      |Top-K  |Network-Shape  |Iterations     |Accuracy.avg	|   
 |--------|-------|---------------|---------------|--------------|
-|1       |5      |(7,128,256,19) |100            |58.7499976158	|
-|2       |5      |(7,128,256,19) |500            |60.2500001921	|
-|3       |5      |(7,512,256,19) |100            |63.7499988079	|
-|4       |5      |(7,512,256,19) |500            |65.9999976158	|
-|5       |3      |(7,128,256,19) |100            |41.2499999049	|
-|7       |3      |(7,512,256,19) |100            |43.7500000011	|
+|1       |5      |(7,512,256,18) |100            |58.41         |
+|2       |5      |(7,128,256,18) |100            |58	          |
