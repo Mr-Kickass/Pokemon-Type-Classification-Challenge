@@ -8,6 +8,7 @@ Created on Sat Jan  7 21:09:09 2017
 import tensorflow as tf
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 pokemonDF=pd.read_csv('Pokemon.csv')
 #display first 6 rows of data
@@ -18,7 +19,7 @@ learning_rate=0.001
 epoch=100
 batch_size=1
 n_classes=18
-n_hidden1=512
+n_hidden1=128
 n_hidden2=256
 #define input data and output labels
 input_data=pokemonDF[['Total','HP','Attack','Defense','Sp. Atk','Sp. Def','Speed']]
@@ -27,7 +28,7 @@ X=tf.placeholder(tf.float32,[None,7])
 y=tf.placeholder(tf.float32,[None,n_classes])
 
 
-input_data_arr=np.array(input_data)
+input_data_arr=np.array(input_data,dtype=float)
 originalY=label.unique()
 oneHotLabel=[]
 for j in label:
@@ -45,9 +46,9 @@ input_data_arr=(input_data_arr-input_data_arr.mean())/input_data_arr.std()
 
 
 testData=input_data_arr[0:101]
-testlabel=np.array(oneHotLabel[0:101])
+testlabel=np.array(oneHotLabel[0:101],dtype=float)
 
-trainLabel=np.array(oneHotLabel[101:801])
+trainLabel=np.array(oneHotLabel[101:801],dtype=float)
 trainData=input_data_arr[101:801]
     
     
@@ -89,13 +90,20 @@ with tf.Session() as ses:
         for batch_element in range(len(trainData)):
             _,c= ses.run([optimizer,costFunction],feed_dict={X:[trainData[batch_element]],y:[trainLabel[batch_element]]})
             avg_loss+=c
-        print("Epoch "+str(ep)+" loss-> " +str(avg_loss/len(input_data)))
+        print("Epoch "+str(ep)+" loss-> " +str(avg_loss/len(trainData)))
         
 #evaluate prediction result
     correct_pred2 = tf.nn.in_top_k(out_layer, tf.cast(tf.argmax(y,1), "int32"), 5)
     accuracy2 = tf.reduce_mean(tf.cast(correct_pred2, tf.float32))
     print ("Accuracy of 'in top k' evaluation method " + str(accuracy2.eval({X:testData, y:testlabel})*100))
+    print("gonna predict classes for test data\n")
+#    pred=tf.argmax(y,1)
+#    print(" prediction "+pred.eval(feed_dict={X:testData}, session=ses))
+    
     
     pred=tf.equal(tf.argmax(out_layer,1),tf.argmax(y,1))
     accuracy=tf.reduce_mean(tf.cast(pred,tf.float32))
     print("Accuracy of argmax method "+str(accuracy.eval({X:testData,y:testlabel})*100))
+    accuracy=tf.argmax(out_layer,1)
+    print("predictions "+str(accuracy.eval(feed_dict={X:testData})))
+    
