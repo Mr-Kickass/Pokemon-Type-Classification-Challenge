@@ -2,7 +2,7 @@
 """
 Created on Sat Jan  7 21:09:09 2017
 
-@author: DELL
+@author: Ashwin
 """
 
 import tensorflow as tf
